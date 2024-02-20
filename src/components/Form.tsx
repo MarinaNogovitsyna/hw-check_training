@@ -1,11 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Training } from '../ts/types';
 
 interface FormProps {
-    addTraning: (training: Training) => void
+    addTraning: (training: Training) => void,
+    edit: Training
 }
 
-export const Form: FC<FormProps> = ({addTraning}) => {
+export const Form: FC<FormProps> = ({addTraning, edit}) => {
     const initialState = {
         date: '',
         kilometers: ''
@@ -18,6 +19,8 @@ export const Form: FC<FormProps> = ({addTraning}) => {
     }
 
     function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
+        console.log(form);
+        
         e.preventDefault();
         if(isCorrectValue()){
             addTraning(form);
@@ -36,6 +39,11 @@ export const Form: FC<FormProps> = ({addTraning}) => {
         }
         return true;
     }
+
+    useEffect(() => {
+        setForm(edit)
+    }, [edit]);
+
   return (
     <form onSubmit={handleSubmit}>
         <label>

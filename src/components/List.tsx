@@ -3,10 +3,11 @@ import { Training } from '../ts/types'
 import { Item } from './Item';
 
 interface ListProps {
-    allTraining: Training[]
+    allTraining: Training[],
+    editTraining: (training: Training) => void
 }
 
-export const List: FC<ListProps> = ({allTraining}) => {
+export const List: FC<ListProps> = ({allTraining, editTraining}) => {
     const [filteredTrainings, setFilteredTrainings] = useState<Training[]>([]);
 
     function filterAndSumByDate(arr: Training[]): Training[] {
@@ -25,16 +26,15 @@ export const List: FC<ListProps> = ({allTraining}) => {
         return sortedObj;
     }
 
-    useEffect(() => {
-        setFilteredTrainings(filterAndSumByDate(allTraining));
-    }, [allTraining]);
-
-    const allValues = filterAndSumByDate(allTraining);
-
     function deleteValue(id: string) {
         const updatedTrainings = filteredTrainings.filter(training => training.date !== id);
         setFilteredTrainings(updatedTrainings);
     }
+
+    useEffect(() => {
+        setFilteredTrainings(filterAndSumByDate(allTraining));
+    }, [allTraining]);
+
 
   return (
     <div className='list'>
@@ -45,7 +45,14 @@ export const List: FC<ListProps> = ({allTraining}) => {
         </div>
         <div className='list__items'>
             {filteredTrainings.map(el => (
-                <Item date={el.date} kilometers={el.kilometers} key={el.date} id={el.date} deleteValue={deleteValue}/>
+                <Item 
+                    date={el.date} 
+                    kilometers={el.kilometers} 
+                    key={el.date} 
+                    id={el.date} 
+                    deleteValue={deleteValue}
+                    editTraining={editTraining}
+                />
             ))}
         </div>
     </div>
