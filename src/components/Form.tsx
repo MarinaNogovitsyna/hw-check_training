@@ -41,7 +41,7 @@ export const Form: FC<FormProps> = ({addTraning, edit}) => {
     }
 
     useEffect(() => {
-        setForm(edit)
+        setForm(edit);
     }, [edit]);
 
   return (
